@@ -1,8 +1,8 @@
 # Arduino-Clock
 
-arduino uno / arduino uno smd clock(or timer project for habibi BOOM BOOM) using:
-- tuch sensor
-- buzzer (or BOOM BOOM)
-- 2x ic cd4511
+arduino uno(or arduino uno smd) clock using:
+- Touch Sensor
+- Buzzer
+- 2x IC cd4511
 - 2x 7segment (Common Cathode)
 - 2x LED
