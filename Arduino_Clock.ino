@@ -176,6 +176,7 @@ void loop() {
     }else{
       counter++;
     }
+    digitalWrite(led2, LOW);
     analogWrite(buzzerPin, 50);
     delay(50);
     dly-=50;
@@ -227,7 +228,8 @@ void loop() {
     show(counter);
   }else if(show_animation==1){
     show(houer);
-    digitalWrite(led2, HIGH);
+    //digitalWrite(led2, HIGH);
+    analogWrite(led2, 80);
   }else if(show_animation==5){
     show(mint);
     digitalWrite(led2, LOW);
