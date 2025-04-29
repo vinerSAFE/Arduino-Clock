@@ -6,4 +6,4 @@ arduino uno(or arduino uno smd) clock using:
 - 2x IC cd4511
 - 2x 7segment (Common Cathode)
 - 2x LED
-Real Time Clock(RTC) ds-1307
+- Real Time Clock(RTC) ds-1307
