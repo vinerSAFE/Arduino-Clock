@@ -28,26 +28,68 @@ void setup() {
   Wire.begin();
   Serial.begin(9600);
 
-  
-//  setTime(0,48,13,6,19,4,25);
+  GPCT();
   byte Secends,Minutes,Hour,Day,Date,Month,Year;
   readTime(&Secends,&Minutes,&Hour,&Day,&Date,&Month,&Year);
   secend =Secends;
   mint=Minutes;
   houer=Hour;
 }
-//void setTime(byte Secends,byte Minutes,byte Hour,byte Day,byte Date,byte Month,byte Year){
-//  Wire.beginTransmission(RTC);
-//  Wire.write(0);
-//  Wire.write(dec2bcd(Secends));
-//  Wire.write(dec2bcd(Minutes));
-//  Wire.write(dec2bcd(Hour));
-//  Wire.write(dec2bcd(Day));
-//  Wire.write(dec2bcd(Date));
-//  Wire.write(dec2bcd(Month));
-//  Wire.write(dec2bcd(Year));
-//  Wire.endTransmission();
-//}
+void GPCT(){
+  //get pc time 
+  const char* Time = __TIME__;
+  if (sscanf(Time, "%d:%d:%d", &houer, &mint, &secend) != 3) return;
+  const char* Date = __DATE__;
+  const char* monthName[12] = {
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+  char Month[12];
+  int mon,Day,Year;
+  if (sscanf(Date, "%s %d %d", Month, &Day, &Year) != 3) return;
+  for (int i = 0; i < 12; i++) {
+    if (strcmp(Month, monthName[i]) == 0) {
+      mon=i+1;
+      break;
+    }
+  }
+  int k=mon,j=Year,y,Weekday;
+  if (mon < 3) {
+    k += 12;
+    j--;
+  }
+  y = j / 100;
+  j=j%100;
+  Year=Year%100;
+  Weekday = (((Day+(13*(k+1))/5+j+j/4+y/4+5*y)%7)+6)%7;
+  
+  //Set to RTC
+  Wire.beginTransmission(RTC);
+  Wire.write(0);
+  Wire.write(dec2bcd((byte)secend));
+  Wire.write(dec2bcd((byte)mint));
+  Wire.write(dec2bcd((byte)houer));
+  Wire.write(dec2bcd((byte)Weekday));
+  Wire.write(dec2bcd((byte)Day));
+  Wire.write(dec2bcd((byte)mon));
+  Wire.write(dec2bcd((byte)Year));
+  Wire.endTransmission();
+
+//  Serial.print(houer);
+//  Serial.print(":");
+//  Serial.print(mint);
+//  Serial.print(":");
+//  Serial.print(secend);
+//  Serial.println();
+//  Serial.print(Year);
+//  Serial.print("-");
+//  Serial.print(mon);
+//  Serial.print("-");
+//  Serial.print(Day);
+//  Serial.print("----");
+//  Serial.print(Weekday);
+//  Serial.println();
+}
+
 //void monitor(){
 //  byte Secends,Minutes,Hour,Day,Date,Month,Year;
 //  readTime(&Secends,&Minutes,&Hour,&Day,&Date,&Month,&Year);
@@ -226,7 +268,7 @@ void show(int bb){
 }
 
 void loop() {
-//  monitor()
+  //monitor();
   int dly =975;
   secend ++;
   show_animation ++;
