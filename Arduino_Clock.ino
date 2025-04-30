@@ -14,12 +14,10 @@ void setup() {
   pinMode(buzzerPin, OUTPUT);
   pinMode(led, OUTPUT);
   pinMode(led2, OUTPUT);
-  
   pinMode(a, OUTPUT);
   pinMode(b, OUTPUT);
   pinMode(c, OUTPUT);
   pinMode(d, OUTPUT);
-
   pinMode(e, OUTPUT);
   pinMode(f, OUTPUT);
   pinMode(g, OUTPUT);
@@ -28,7 +26,7 @@ void setup() {
   Wire.begin();
   Serial.begin(9600);
 
-  GPCT();
+  //GPCT();
   // setTime(0,48,13,6,19,4,25);
   byte Secends,Minutes,Hour,Day,Date,Month,Year;
   readTime(&Secends,&Minutes,&Hour,&Day,&Date,&Month,&Year);
@@ -36,45 +34,45 @@ void setup() {
   mint=Minutes;
   houer=Hour;
 }
-void GPCT(){
-  //get pc time 
-  const char* Time = __TIME__;
-  if (sscanf(Time, "%d:%d:%d", &houer, &mint, &secend) != 3) return;
-  const char* Date = __DATE__;
-  const char* monthName[12] = {
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-  char Month[12];
-  int mon,Day,Year;
-  if (sscanf(Date, "%s %d %d", Month, &Day, &Year) != 3) return;
-  for (int i = 0; i < 12; i++) {
-    if (strcmp(Month, monthName[i]) == 0) {
-      mon=i+1;
-      break;
-    }
-  }
-  int k=mon,j=Year,y,Weekday;
-  if (mon < 3) {
-    k += 12;
-    j--;
-  }
-  y = j / 100;
-  j=j%100;
-  Year=Year%100;
-  Weekday = (((Day+(13*(k+1))/5+j+j/4+y/4+5*y)%7)+6)%7;
-  
-  //Set to RTC
-  Wire.beginTransmission(RTC);
-  Wire.write(0);
-  Wire.write(dec2bcd((byte)secend));
-  Wire.write(dec2bcd((byte)mint));
-  Wire.write(dec2bcd((byte)houer));
-  Wire.write(dec2bcd((byte)Weekday));
-  Wire.write(dec2bcd((byte)Day));
-  Wire.write(dec2bcd((byte)mon));
-  Wire.write(dec2bcd((byte)Year));
-  Wire.endTransmission();
-}
+//void GPCT(){
+//  //get pc time 
+//  const char* Time = __TIME__;
+//  if (sscanf(Time, "%d:%d:%d", &houer, &mint, &secend) != 3) return;
+//  const char* Date = __DATE__;
+//  const char* monthName[12] = {
+//  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+//  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+//  char Month[12];
+//  int mon,Day,Year;
+//  if (sscanf(Date, "%s %d %d", Month, &Day, &Year) != 3) return;
+//  for (int i = 0; i < 12; i++) {
+//    if (strcmp(Month, monthName[i]) == 0) {
+//      mon=i+1;
+//      break;
+//    }
+//  }
+//  int k=mon,j=Year,y,Weekday;
+//  if (mon < 3) {
+//    k += 12;
+//    j--;
+//  }
+//  y = j / 100;
+//  j=j%100;
+//  Year=Year%100;
+//  Weekday = (((Day+(13*(k+1))/5+j+j/4+y/4+5*y)%7)+6)%7;
+//  
+//  //Set to RTC
+//  Wire.beginTransmission(RTC);
+//  Wire.write(0);
+//  Wire.write(dec2bcd((byte)secend));
+//  Wire.write(dec2bcd((byte)mint));
+//  Wire.write(dec2bcd((byte)houer));
+//  Wire.write(dec2bcd((byte)Weekday));
+//  Wire.write(dec2bcd((byte)Day));
+//  Wire.write(dec2bcd((byte)mon));
+//  Wire.write(dec2bcd((byte)Year));
+//  Wire.endTransmission();
+//}
 //void setTime(byte Secends,byte Minutes,byte Hour,byte Day,byte Date,byte Month,byte Year){
 //  Wire.beginTransmission(RTC);
 //  Wire.write(0);
@@ -265,7 +263,7 @@ void show(int bb){
 }
 
 void loop() {
-  //monitor();
+//  monitor();
   int dly =975;
   secend ++;
   show_animation ++;
@@ -321,12 +319,10 @@ void loop() {
       counter=set=0;
     }
   }
-  
   if(secend>=60){
     mint ++;
     secend =0;
   }
-  
   if(mint >=60){
     houer ++;
     mint =0;
@@ -334,7 +330,6 @@ void loop() {
   if(houer >24){
     houer =1;
   }
-
   if(counter>0){
     show(counter);
   }else if(show_animation==1){
@@ -347,7 +342,6 @@ void loop() {
   }else if(show_animation>15){
     show_animation=0;
   }
-
   if(houer==houer_ring&&mint==mint_ring&&secend<2){
     isring=true;
   }else if(isring){
@@ -356,7 +350,6 @@ void loop() {
     delay(200);
     digitalWrite(buzzerPin, LOW);
   }
-  
   digitalWrite(led, HIGH);
   delay(25);
   digitalWrite(led, LOW);
