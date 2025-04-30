@@ -29,6 +29,7 @@ void setup() {
   Serial.begin(9600);
 
   GPCT();
+  // setTime(0,48,13,6,19,4,25);
   byte Secends,Minutes,Hour,Day,Date,Month,Year;
   readTime(&Secends,&Minutes,&Hour,&Day,&Date,&Month,&Year);
   secend =Secends;
@@ -73,23 +74,19 @@ void GPCT(){
   Wire.write(dec2bcd((byte)mon));
   Wire.write(dec2bcd((byte)Year));
   Wire.endTransmission();
-
-//  Serial.print(houer);
-//  Serial.print(":");
-//  Serial.print(mint);
-//  Serial.print(":");
-//  Serial.print(secend);
-//  Serial.println();
-//  Serial.print(Year);
-//  Serial.print("-");
-//  Serial.print(mon);
-//  Serial.print("-");
-//  Serial.print(Day);
-//  Serial.print("----");
-//  Serial.print(Weekday);
-//  Serial.println();
 }
-
+//void setTime(byte Secends,byte Minutes,byte Hour,byte Day,byte Date,byte Month,byte Year){
+//  Wire.beginTransmission(RTC);
+//  Wire.write(0);
+//  Wire.write(dec2bcd(Secends));
+//  Wire.write(dec2bcd(Minutes));
+//  Wire.write(dec2bcd(Hour));
+//  Wire.write(dec2bcd(Day));
+//  Wire.write(dec2bcd(Date));
+//  Wire.write(dec2bcd(Month));
+//  Wire.write(dec2bcd(Year));
+//  Wire.endTransmission();
+//}
 //void monitor(){
 //  byte Secends,Minutes,Hour,Day,Date,Month,Year;
 //  readTime(&Secends,&Minutes,&Hour,&Day,&Date,&Month,&Year);
